@@ -1,10 +1,15 @@
-package com.example.store
+package com.example.store.activities
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.store.R
+import com.example.store.adapters.StoreAdapter
+import com.example.store.adapters.onClickListener
+import com.example.store.database.StoreApplication
+import com.example.store.entities.StoreEntity
 import com.example.store.databinding.ActivityMainBinding
+import com.example.store.fragments.EditStoreFragment
 import java.util.concurrent.LinkedBlockingQueue
 
 class MainActivity : AppCompatActivity(), onClickListener, MainAux {
@@ -35,8 +40,12 @@ class MainActivity : AppCompatActivity(), onClickListener, MainAux {
         }
     }
 
-    private fun launcherEditFragment() {
+    private fun launcherEditFragment(args: Bundle? = null) {
         val fragment = EditStoreFragment()
+
+        if (args != null) {
+            fragment.arguments = args
+        }
 
         supportFragmentManager.beginTransaction()
             .add(R.id.containerMain, fragment)
@@ -72,8 +81,11 @@ class MainActivity : AppCompatActivity(), onClickListener, MainAux {
         mAdapter.setStores(queue.take())
     }
 
-    override fun onClick(storeEntity: StoreEntity) {
+    override fun onClick(storeId: Long) {
+        var args = Bundle()
+        args.putLong("id", storeId)
 
+        launcherEditFragment(args)
     }
 
     override fun onFavoriteStore(storeEntity: StoreEntity) {
@@ -112,5 +124,9 @@ class MainActivity : AppCompatActivity(), onClickListener, MainAux {
 
     override fun addStore(storeEntity: StoreEntity) {
         mAdapter.add(storeEntity)
+    }
+
+    fun updateStore(storeEntity: StoreEntity) {
+        mAdapter.update(storeEntity)
     }
 }

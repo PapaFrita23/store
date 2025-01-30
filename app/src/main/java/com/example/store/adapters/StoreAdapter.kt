@@ -1,4 +1,4 @@
-package com.example.store
+package com.example.store.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.store.R
 import com.example.store.databinding.ItemStoreBinding
+import com.example.store.entities.StoreEntity
 
 class StoreAdapter(
     private var stores: MutableList<StoreEntity>,
@@ -72,7 +74,7 @@ class StoreAdapter(
         fun setListener(storeEntity: StoreEntity) {
             with(binding.root) {
                 setOnClickListener {
-                    listener.onClick(storeEntity)
+                    listener.onClick(storeEntity.id)
                 }
                 setOnLongClickListener {
                     listener.onDeleteStore(storeEntity)
